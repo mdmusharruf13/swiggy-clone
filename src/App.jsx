@@ -1,11 +1,11 @@
 import "./App.css";
+import Header from "./components/Header";
 
 function App() {
+  // console.log("data-0", data[1]);
   return (
     <>
-      <h1>swiggy clone app</h1>
-      <p>{import.meta.env.VITE_NAME}</p>
-      <p>{JSON.parse(import.meta.env.VITE_DATA).NAME}</p>
+      <Header />
     </>
   );
 }
