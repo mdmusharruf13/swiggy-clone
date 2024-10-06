@@ -2,6 +2,7 @@ import "./App.css";
 import Header from "./components/Header";
 import { useEffect, useState } from "react";
 import MenuItems from "./components/MenuItems";
+import RestaurantInYourCity from "./components/RestaurantInYourCity";
 
 function App() {
   const [data, setData] = useState([]);
@@ -23,6 +24,12 @@ function App() {
       <Header />
       <main className="h-full">
         <MenuItems itemsData={data[0]} />
+        <RestaurantInYourCity
+          restaurants={
+            data[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+          }
+          header={data[1]?.card?.card?.header?.title}
+        />
       </main>
     </>
   );
