@@ -1,35 +1,53 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const BASE_URL =
   "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/";
 
 export default function MenuItems({ itemsData }) {
   const [menuData, setMenuData] = useState(null);
-  const [transValue, setTransValue] = useState(0);
-  const [move, setMove] = useState(0);
-  let [maxMove, setMaxMove] = useState(0);
+  const [scroll, setScroll] = useState(0);
+  const [maxScroll, setMaxScroll] = useState(0);
+  const [slider, setSlider] = useState([]);
+  const sliderRef = useRef(null);
+
+  let sliderWidth = 0;
 
   useEffect(() => {
     setMenuData(itemsData?.card?.card?.gridElements?.infoWithStyle?.info);
   }, [itemsData]);
 
-  useEffect(() => {
-    setMaxMove(Math.floor((menuData?.length - 2) / 3));
-    // console.log(maxMove);
-  }, [menuData]);
-
   const handleNext = () => {
-    if (move === maxMove || move > maxMove) return;
-    setTransValue((prev) => prev - 289);
-    setMove((prev) => prev + 1);
-    // console.log(transValue - 288, move + 1, maxMove);
+    if (sliderRef.current && maxScroll === 0) {
+      setMaxScroll(
+        sliderRef.current.scrollWidth - sliderRef.current.offsetWidth
+      );
+      sliderWidth = sliderRef.current.offsetWidth;
+      setScroll((prev) => prev - (sliderWidth > 288 ? sliderWidth / 2 : 288));
+      setSlider((prev) => [...prev, sliderWidth > 288 ? sliderWidth / 2 : 288]);
+    }
+    sliderWidth = sliderRef.current.offsetWidth;
+    if (Math.abs(scroll) < maxScroll) {
+      if (
+        Math.abs(scroll) + (sliderWidth > 288 ? sliderWidth / 2 : 288) >
+        maxScroll
+      ) {
+        let newScroll = maxScroll - Math.abs(scroll);
+        setScroll((prev) => prev - newScroll);
+        setSlider((prev) => [...prev, newScroll]);
+      } else {
+        setScroll((prev) => prev - (sliderWidth > 288 ? sliderWidth / 2 : 288));
+        setSlider((prev) => [
+          ...prev,
+          sliderWidth > 288 ? sliderWidth / 2 : 288,
+        ]);
+      }
+    }
   };
   const handlePrev = () => {
-    if (move === 0) return;
-    setTransValue((prev) => prev + 289);
-    setMove((prev) => prev - 1);
-
-    // console.log(transValue + 288, move - 1, maxMove);
+    if (!slider.length) return;
+    const newScroll = slider.at(0);
+    setSlider((prev) => [...slider.slice(1)]);
+    setScroll((prev) => prev + Math.abs(newScroll));
   };
 
   return (
@@ -41,13 +59,13 @@ export default function MenuItems({ itemsData }) {
         <span className="flex gap-2 text-2xl">
           <i
             className={`fi fi-rr-arrow-circle-left cursor-pointer ${
-              move === 0 ? "text-gray-400" : ""
+              scroll === 0 ? "text-gray-400" : ""
             }`}
             onClick={() => handlePrev()}
           ></i>
           <i
             className={`fi fi-rr-arrow-circle-right cursor-pointer ${
-              move === maxMove ? "text-gray-400" : ""
+              maxScroll && Math.abs(scroll) === maxScroll ? "text-gray-400" : ""
             }`}
             onClick={() => handleNext()}
           ></i>
@@ -55,8 +73,9 @@ export default function MenuItems({ itemsData }) {
       </div>
       <div className="w-[75%] overflow-hidden mx-auto ">
         <div
-          style={{ translate: `${transValue}px` }}
+          style={{ translate: `${scroll}px` }}
           className={`mx-auto flex duration-300`}
+          ref={sliderRef}
         >
           {menuData &&
             menuData.map((item) => (

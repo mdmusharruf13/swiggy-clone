@@ -21,7 +21,7 @@ function App() {
   return (
     <>
       <Header />
-      <main className="bg-gray-100 h-full">
+      <main className="h-full">
         <MenuItems itemsData={data[0]} />
       </main>
     </>
