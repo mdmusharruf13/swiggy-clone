@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import { useEffect, useState } from "react";
 import MenuItems from "./components/MenuItems";
 import RestaurantInYourCity from "./components/RestaurantInYourCity";
+import AllRestaurants from "./components/AllRestaurants";
 
 function App() {
   const [data, setData] = useState([]);
@@ -18,7 +19,7 @@ function App() {
     getResponse();
   }, []);
 
-  // console.log("data-0", data[1]);
+  console.log("data-0", data);
   return (
     <>
       <Header />
@@ -30,6 +31,7 @@ function App() {
           }
           header={data[1]?.card?.card?.header?.title}
         />
+        <AllRestaurants title={data[2]} filterData={data[3]} />
       </main>
     </>
   );
