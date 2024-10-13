@@ -46,9 +46,9 @@ export default function RestaurantInYourCity({ restaurants, header }) {
     <>
       {data && data.length > 0 ? (
         <section className=" w-[75%] mx-auto">
-          <div className="flex flex-col gap-2 overflow-hidden">
+          <div className="flex flex-col gap-4 overflow-hidden">
             <div className="flex justify-between">
-              <p className="text-2xl font-bold">{header}</p>
+              <p className="text-2xl font-extrabold">{header}</p>
               <span className="flex gap-2 text-2xl">
                 <i
                   className={`fi fi-rr-arrow-circle-left cursor-pointer ${
@@ -67,7 +67,7 @@ export default function RestaurantInYourCity({ restaurants, header }) {
               </span>
             </div>
             <div
-              className="flex slider duration-300"
+              className="flex slider duration-300 gap-5"
               ref={sliderRef}
               style={{
                 translate: `${scroll}px`,

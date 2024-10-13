@@ -19,7 +19,10 @@ function App() {
     getResponse();
   }, []);
 
-  console.log("data-0", data);
+  // console.log(
+  //   "data-0",
+  //   data[4]?.card?.card.gridElements?.infoWithStyle?.restaurants
+  // );
   return (
     <>
       <Header />
@@ -31,7 +34,13 @@ function App() {
           }
           header={data[1]?.card?.card?.header?.title}
         />
-        <AllRestaurants title={data[2]} filterData={data[3]} />
+        <AllRestaurants
+          title={data[2]}
+          filterData={data[3]}
+          restaurants={
+            data[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+          }
+        />
       </main>
     </>
   );
