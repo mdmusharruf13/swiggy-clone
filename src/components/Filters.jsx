@@ -11,7 +11,7 @@ export default function Filters({
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    setData(filterData?.card?.card?.facetList);
+    setData(filterData);
   }, [filterData]);
 
   // useEffect(() => {
@@ -83,9 +83,9 @@ function FilterBtn({
   const btnRef = useRef(null);
 
   const handleClick = (label) => {
-    if (btnRef) {
-      btnRef.current.parentElement.style.background = "rgb(204, 214, 217)";
-    }
+    // if (btnRef) {
+    //   btnRef.current.parentElement.style.background = "rgb(204, 214, 217)";
+    // }
     if (!active) {
       setLastFilterAdded(label);
       if (btnRef) {
@@ -106,7 +106,6 @@ function FilterBtn({
     });
     setActive(!active);
   };
-  // console.log("filterBtn rendered");
   return btnData && btnData.length <= 3 ? (
     <p
       className={`flex items-center gap-1.5 px-2.5 py-1`}

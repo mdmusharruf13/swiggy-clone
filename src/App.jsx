@@ -4,9 +4,15 @@ import { useEffect, useState } from "react";
 import MenuItems from "./components/MenuItems";
 import RestaurantInYourCity from "./components/RestaurantInYourCity";
 import AllRestaurants from "./components/AllRestaurants";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllRestaurants } from "./slices/restaurantSlice";
 
 function App() {
   const [data, setData] = useState([]);
+  const restSlice = useSelector(
+    (state) => state.restaurantSlice.restaurantsData
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getResponse = async () => {
@@ -15,9 +21,16 @@ function App() {
       );
       const response = await req.json();
       setData(response.data.cards);
+      dispatch(setAllRestaurants(response.data.cards));
     };
     getResponse();
   }, []);
+
+  useEffect(() => {
+    if (restSlice.length) {
+      console.log("restSlice", restSlice);
+    }
+  }, [restSlice]);
 
   // console.log(
   //   "data-0",
@@ -27,13 +40,8 @@ function App() {
     <>
       <Header />
       <main className="h-full">
-        <MenuItems itemsData={data[0]} />
-        <RestaurantInYourCity
-          restaurants={
-            data[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-          }
-          header={data[1]?.card?.card?.header?.title}
-        />
+        <MenuItems />
+        <RestaurantInYourCity />
         <AllRestaurants
           title={data[2]}
           filterData={data[3]}

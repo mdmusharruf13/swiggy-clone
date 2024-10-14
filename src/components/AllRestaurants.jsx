@@ -1,41 +1,37 @@
 import { useEffect, useState } from "react";
 import Filters from "./Filters";
 import MenuCard from "./MenuCard";
+import { useSelector } from "react-redux";
 
-export default function AllRestaurants({ title, filterData, restaurants }) {
+export default function AllRestaurants() {
   const [restaurantList, setRestaurantList] = useState([]);
-  // const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-  const [filterNames, setFilterNames] = useState(null);
+  const [filterData, setFilterData] = useState([]);
+  const [filterNames, setFilterNames] = useState([]);
   const [lastFilterAdded, setLastFilterAdded] = useState("");
   const [lastFilterRemoved, setLastFilterRemoved] = useState("");
+  const [title, setTitle] = useState("");
+
+  const restaurantData = useSelector(
+    (state) => state.restaurantSlice.restaurantsData
+  );
 
   useEffect(() => {
-    if (restaurants) {
-      console.log("restaurants", restaurants);
-      setRestaurantList((prev) => [...prev, ...restaurants]);
-    }
-  }, [restaurants]);
+    if (!restaurantData.length) return;
 
-  useEffect(() => {
-    if (!filterNames) return;
-    // console.log("filterNames", filterNames);
-    // let keys = Object.keys(filterNames);
-    // console.log("keys", keys);
+    setTitle(restaurantData[2]?.card?.card?.title);
+    setFilterData(restaurantData[3]?.card?.card?.facetList);
+    setRestaurantList(
+      restaurantData[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
+  }, [restaurantData]);
 
-    // console.log(filterNames);
-    console.log(Object.keys(filterNames));
-  }, [filterNames]);
-
-  // console.log("all restaurant rendered");
   return (
     <>
       <section className="w-[75%]  mx-auto flex flex-col gap-9">
-        {title && filterData ? (
+        {title && filterNames ? (
           <div className="flex flex-col gap-6">
             <div>
-              <p className="text-2xl font-bold text-nowrap ">
-                {title?.card?.card?.title}
-              </p>
+              <p className="text-2xl font-bold text-nowrap ">{title}</p>
             </div>
             <div>
               <Filters
@@ -64,8 +60,4 @@ export default function AllRestaurants({ title, filterData, restaurants }) {
       </section>
     </>
   );
-}
-
-function Card() {
-  return <div>cardd bro</div>;
 }

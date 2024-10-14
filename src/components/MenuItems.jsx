@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 const BASE_URL =
   "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/";
@@ -10,11 +11,18 @@ export default function MenuItems({ itemsData }) {
   const [slider, setSlider] = useState([]);
   const sliderRef = useRef(null);
 
+  const menus = useSelector(
+    (state) => state.restaurantSlice.restaurantsData[0]
+  );
+
   let sliderWidth = 0;
 
   useEffect(() => {
-    setMenuData(itemsData?.card?.card?.gridElements?.infoWithStyle?.info);
-  }, [itemsData]);
+    if (menus) {
+      // console.log("menus", menus.card.card.gridElements.infoWithStyle.info);
+      setMenuData(menus.card.card.gridElements.infoWithStyle.info);
+    }
+  }, [menus]);
 
   const handleNext = () => {
     if (sliderRef.current && maxScroll === 0) {
@@ -54,7 +62,7 @@ export default function MenuItems({ itemsData }) {
     <section className="w-full h-[256px] m-auto p-[16px]">
       <div className="w-[75%] mx-auto flex justify-between">
         <p className="text-2xl font-semibold">
-          {itemsData?.card?.card?.header?.title}
+          {menus?.card?.card?.header?.title}
         </p>
         <span className="flex gap-2 text-2xl">
           <i

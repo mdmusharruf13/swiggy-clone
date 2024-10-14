@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import MenuCard from "./MenuCard";
+import { useSelector } from "react-redux";
 
-export default function RestaurantInYourCity({ restaurants, header }) {
-  const [data, setData] = useState(null);
+export default function RestaurantInYourCity() {
   const [scroll, setScroll] = useState(0);
   const [maxScroll, setMaxScroll] = useState(0);
 
@@ -10,9 +10,19 @@ export default function RestaurantInYourCity({ restaurants, header }) {
   const sliderRef = useRef(null);
   let width = 0;
 
+  const [restaurantList, setRestaurantList] = useState(null);
+  const [header, setHeader] = useState("");
+
+  const restaurantData = useSelector(
+    (state) => state.restaurantSlice.restaurantsData[1]
+  );
+
   useEffect(() => {
-    setData(restaurants);
-  }, [header, restaurants]);
+    setRestaurantList(
+      restaurantData?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
+    setHeader(restaurantData?.card?.card?.header?.title);
+  }, [restaurantData]);
 
   const handleNext = () => {
     if (sliderRef.current && maxScroll === 0) {
@@ -44,7 +54,7 @@ export default function RestaurantInYourCity({ restaurants, header }) {
 
   return (
     <>
-      {data && data.length > 0 ? (
+      {restaurantList && restaurantList.length > 0 ? (
         <section className=" w-[75%] mx-auto">
           <div className="flex flex-col gap-4 overflow-hidden">
             <div className="flex justify-between">
@@ -73,7 +83,7 @@ export default function RestaurantInYourCity({ restaurants, header }) {
                 translate: `${scroll}px`,
               }}
             >
-              {restaurants.map((restaurant) => (
+              {restaurantList.map((restaurant) => (
                 <div key={restaurant.info.id} className="inline">
                   <MenuCard restaurant={restaurant} />
                 </div>
