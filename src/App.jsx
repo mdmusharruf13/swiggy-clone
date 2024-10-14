@@ -6,6 +6,7 @@ import RestaurantInYourCity from "./components/RestaurantInYourCity";
 import AllRestaurants from "./components/AllRestaurants";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllRestaurants } from "./slices/restaurantSlice";
+import BestPlaceToEatAcrossCities from "./components/BestPlaceToEatAcrossCities";
 
 function App() {
   const [data, setData] = useState([]);
@@ -42,13 +43,8 @@ function App() {
       <main className="h-full">
         <MenuItems />
         <RestaurantInYourCity />
-        <AllRestaurants
-          title={data[2]}
-          filterData={data[3]}
-          restaurants={
-            data[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-          }
-        />
+        <AllRestaurants />
+        <BestPlaceToEatAcrossCities />
       </main>
     </>
   );
