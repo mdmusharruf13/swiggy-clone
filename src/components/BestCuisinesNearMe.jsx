@@ -12,7 +12,6 @@ export default function BestCuisinesNearMe() {
 
   useEffect(() => {
     if (restaurantData.length) {
-      console.log("restaurantData: -> ", restaurantData);
       setRestaurantList(restaurantData[7]?.card?.card?.brands);
       setTitle(restaurantData[7]?.card?.card?.title);
     }

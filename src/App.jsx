@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllRestaurants } from "./slices/restaurantSlice";
 import BestPlaceToEatAcrossCities from "./components/BestPlaceToEatAcrossCities";
 import BestCuisinesNearMe from "./components/BestCuisinesNearMe";
+import ExploreEveryRestaurantsNearMe from "./components/ExploreEveryRestaurantsNearMe";
 
 function App() {
   const [data, setData] = useState([]);
@@ -47,6 +48,7 @@ function App() {
         <AllRestaurants />
         <BestPlaceToEatAcrossCities />
         <BestCuisinesNearMe />
+        <ExploreEveryRestaurantsNearMe />
       </main>
     </>
   );
