@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import Button from "./common/Button";
 import { useEffect, useState } from "react";
 
 export default function BestPlaceToEatAcrossCities() {
@@ -13,7 +12,6 @@ export default function BestPlaceToEatAcrossCities() {
 
   useEffect(() => {
     if (restaurantsData) {
-      console.log(restaurantsData[6]?.card?.card);
       setBestRestaurants(restaurantsData[6]?.card?.card?.brands);
       setTitle(restaurantsData[6]?.card?.card?.title);
     }
