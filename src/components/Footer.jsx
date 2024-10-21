@@ -47,6 +47,7 @@ const footerInfo = [
 export default function Footer() {
   const [footerData, setfooterData] = useState({});
   const [allCities, setAllCities] = useState([]);
+  const [showAllCities, setShowAllCities] = useState(false);
   const restaurantData = useSelector(
     (state) => state.restaurantSlice.restaurantsData
   );
@@ -56,7 +57,6 @@ export default function Footer() {
 
   useEffect(() => {
     if (restaurantData) {
-      // console.log(restaurantData[9]?.card?.card);
       setfooterData(restaurantData[9]?.card?.card);
     }
     if (citiesData) {
@@ -93,14 +93,69 @@ export default function Footer() {
                 <p className="font-bold">{currItem.title}</p>
                 <NameList names={currItem.items} />
                 {currItem?.moreItems ? (
-                  <button className="border border-black rounded-md flex items-center gap-1 p-1 hover:bg-orange-400">
-                    {allCities.length - 6 + " cities "}{" "}
-                    <i className="fi fi-sr-angle-small-down flex"></i>
+                  <button
+                    className="border border-black rounded-md flex items-center gap-1 p-1 hover:shadow-lg"
+                    onClick={() => setShowAllCities(!showAllCities)}
+                  >
+                    {allCities.length - 6 + " cities "}
+                    {showAllCities ? (
+                      <i className="fi fi-sr-angle-small-up flex"></i>
+                    ) : (
+                      <i className="fi fi-sr-angle-small-down flex"></i>
+                    )}
                   </button>
                 ) : null}
               </div>
             ))}
           </div>
+
+          {allCities && showAllCities && (
+            <div className="flex flex-col gap-4">
+              <p className="font-bold">Other cities that we deliver:</p>
+              <div className="flex justify-between">
+                <div className="flex flex-col gap-2">
+                  {allCities.slice(6, 154).map((city) => (
+                    <p
+                      key={city.text}
+                      className="cursor-pointer hover:text-gray-800"
+                    >
+                      {city.text}
+                    </p>
+                  ))}
+                </div>
+                <div className="flex flex-col gap-2">
+                  {allCities.slice(154, 302).map((city) => (
+                    <p
+                      key={city.text}
+                      className="cursor-pointer hover:text-gray-800"
+                    >
+                      {city.text}
+                    </p>
+                  ))}
+                </div>
+                <div className="flex flex-col gap-2">
+                  {allCities.slice(302, 450).map((city) => (
+                    <p
+                      key={city.text}
+                      className="cursor-pointer hover:text-gray-800"
+                    >
+                      {city.text}
+                    </p>
+                  ))}
+                </div>
+                <div className="flex flex-col gap-2">
+                  {allCities.slice(450).map((city) => (
+                    <p
+                      key={city.text}
+                      className="cursor-pointer hover:text-gray-800"
+                    >
+                      {city.text}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </footer>
@@ -109,9 +164,9 @@ export default function Footer() {
 
 function NameList({ names }) {
   return (
-    <div className=" flex flex-col gap-2">
+    <div className=" flex flex-col gap-2 ">
       {names.map((name) => (
-        <p key={name} className="cursor-pointer">
+        <p key={name} className="cursor-pointer hover:text-gray-800">
           {name}
         </p>
       ))}
