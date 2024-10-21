@@ -42,12 +42,36 @@ function App() {
         <Header />
       </div>
       <main className="mt-[80px]">
-        <MenuItems />
-        <RestaurantInYourCity />
-        <AllRestaurants />
-        <BestPlaceToEatAcrossCities />
-        <BestCuisinesNearMe />
-        <ExploreEveryRestaurantsNearMe />
+        <section>
+          <MenuItems />
+        </section>
+        <section className="w-[75%] mx-auto my-10">
+          <hr />
+        </section>
+        <section>
+          <RestaurantInYourCity />
+        </section>
+        <section className="w-[75%] mx-auto my-10">
+          <hr />
+        </section>
+        <section>
+          <AllRestaurants />
+        </section>
+        <section className="w-[75%] mx-auto my-10">
+          <hr />
+        </section>
+        <section>
+          <BestPlaceToEatAcrossCities />
+        </section>
+        <section className="my-14"></section>
+        <section>
+          <BestCuisinesNearMe />
+        </section>
+        <section className="my-14"></section>
+        <section>
+          <ExploreEveryRestaurantsNearMe />
+        </section>
+        <section className="my-14"></section>
       </main>
       <Footer />
     </>
