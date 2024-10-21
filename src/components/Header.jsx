@@ -33,7 +33,7 @@ const headerData = [
 
 export default function Header() {
   return (
-    <header className="h-[80px] px-5 flex justify-center items-center">
+    <header className="h-[80px] px-5 flex justify-center items-center shadow-[0_5px_30px_-25px_grey]">
       <div className=" w-[1200px]  flex justify-between items-center">
         <div className="flex gap-8 items-center">
           <img
@@ -48,11 +48,11 @@ export default function Header() {
           </div>
         </div>
         <div>
-          <ul className="flex gap-8">
+          <ul className="flex gap-8 cursor-pointer">
             {headerData.map((item) => (
               <li
                 key={item.title}
-                className="flex items-center gap-2  text-gray-500 hover:text-orange-500"
+                className="flex items-center gap-2  text-gray-500 hover:text-orange-500 "
               >
                 <span>{item.icon}</span>
                 <a href="#" className="font-semibold">

@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/Header";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MenuItems from "./components/MenuItems";
 import RestaurantInYourCity from "./components/RestaurantInYourCity";
 import AllRestaurants from "./components/AllRestaurants";
@@ -36,14 +36,12 @@ function App() {
     }
   }, [restSlice]);
 
-  // console.log(
-  //   "data-0",
-  //   data[4]?.card?.card.gridElements?.infoWithStyle?.restaurants
-  // );
   return (
     <>
-      <Header />
-      <main className="h-full">
+      <div className="fixed top-0 w-full z-50 bg-white ">
+        <Header />
+      </div>
+      <main className="mt-[80px]">
         <MenuItems />
         <RestaurantInYourCity />
         <AllRestaurants />
