@@ -47,7 +47,7 @@ export default function BestPlaceToEatAcrossCities() {
             {showAllRestaurants ? null : (
               <button
                 onClick={handleShowAllRestaurant}
-                className="border border-gray-300 hover:bg-gray-100 rounded-lg p-4 w-[23%]"
+                className="border border-gray-300 hover:bg-gray-300 rounded-lg p-4 w-[23%]"
               >
                 Show More
                 <span>

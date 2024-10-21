@@ -9,6 +9,7 @@ import { setAllRestaurants } from "./slices/restaurantSlice";
 import BestPlaceToEatAcrossCities from "./components/BestPlaceToEatAcrossCities";
 import BestCuisinesNearMe from "./components/BestCuisinesNearMe";
 import ExploreEveryRestaurantsNearMe from "./components/ExploreEveryRestaurantsNearMe";
+import Footer from "./components/Footer";
 
 function App() {
   const [data, setData] = useState([]);
@@ -50,6 +51,7 @@ function App() {
         <BestCuisinesNearMe />
         <ExploreEveryRestaurantsNearMe />
       </main>
+      <Footer />
     </>
   );
 }
