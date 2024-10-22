@@ -26,7 +26,6 @@ const headerData = [
   },
   {
     title: "Cart",
-    icon: <i className="fi fi-rr-basket-shopping-simple"></i>,
     link: "cart",
   },
 ];
@@ -54,7 +53,20 @@ export default function Header() {
                 key={item.title}
                 className="flex items-center gap-2  text-gray-500 hover:text-orange-500 "
               >
-                <span>{item.icon}</span>
+                {item.title === "Cart" ? (
+                  <div>
+                    <div className=" rounded-lg w-[19px] h-[1px] bg-gray-500"></div>
+                    <div className="flex justify-between">
+                      <div className="w-[1px] h-[15px] bg-gray-500 rounded-lg rotate-6"></div>
+                      <div className="text-[10px] font-bold">{0}</div>
+                      <div className="w-[1px] h-[15px] bg-gray-500 rounded-lg -rotate-6"></div>
+                    </div>
+                    <div className="w-[20px] h-[1px] rounded-lg bg-gray-500"></div>
+                  </div>
+                ) : (
+                  <span>{item.icon}</span>
+                )}
+
                 <a href="#" className="font-semibold">
                   {item.title}
                 </a>
