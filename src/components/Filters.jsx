@@ -7,12 +7,25 @@ export default function Filters({
   setLastFilterAdded,
   setLastFilterRemoved,
 }) {
-  // const [filter, setFilter] = useState(null);
-  const [data, setData] = useState(null);
+  const [nonFiltered, setNonFiltered] = useState([]);
+  const [allData, setAllData] = useState(null);
 
   useEffect(() => {
-    setData(filterData);
+    let newData = filterData.map((item, i) => ({
+      ...item,
+      ["index"]: i,
+    }));
+    setAllData(newData);
+    setNonFiltered(newData);
   }, [filterData]);
+
+  useEffect(() => {
+    console.log("filterNames: ", filterNames);
+  }, [filterNames]);
+
+  useEffect(() => {
+    console.log("nonFiltered: ", nonFiltered);
+  }, [nonFiltered]);
 
   // useEffect(() => {
   //   if (data) {
@@ -50,24 +63,29 @@ export default function Filters({
             Sort By <i className="fi fi-sr-angle-small-down flex"></i>
           </div>
         </div>
-        {data
-          ? data.map(
-              (item) =>
-                item.facetInfo.length <= 3 && (
-                  <div
-                    key={item.facetInfo[0].id}
-                    className="flex items-center min-w-fit border border-gray-400 rounded-full cursor-pointer shadow-md"
-                  >
-                    <FilterBtn
-                      btnData={item.facetInfo}
-                      setFilterNames={setFilterNames}
-                      setLastFilterAdded={setLastFilterAdded}
-                      setLastFilterRemoved={setLastFilterRemoved}
-                    />
-                  </div>
-                )
+
+        {(filterNames
+          ? [...filterNames, ...nonFiltered]
+          : allData
+          ? allData
+          : []
+        ).map(
+          (item) =>
+            item.facetInfo.length <= 3 && (
+              <div
+                key={item.id}
+                className="flex items-center min-w-fit border border-gray-400 rounded-full cursor-pointer shadow-md"
+              >
+                <FilterBtn
+                  btnData={item}
+                  setFilterNames={setFilterNames}
+                  setLastFilterAdded={setLastFilterAdded}
+                  setLastFilterRemoved={setLastFilterRemoved}
+                  setNonFiltered={setNonFiltered}
+                />
+              </div>
             )
-          : null}
+        )}
       </div>
     </>
   );
@@ -78,41 +96,37 @@ function FilterBtn({
   setFilterNames,
   setLastFilterAdded,
   setLastFilterRemoved,
+  setNonFiltered,
 }) {
   const [active, setActive] = useState(false);
   const btnRef = useRef(null);
 
-  const handleClick = (label) => {
-    // if (btnRef) {
-    //   btnRef.current.parentElement.style.background = "rgb(204, 214, 217)";
-    // }
+  const handleClick = (btnData) => {
     if (!active) {
-      setLastFilterAdded(label);
-      if (btnRef) {
-        btnRef.current.parentElement.style.background = "rgb(204, 214, 217)";
-      }
+      btnRef &&
+        (btnRef.current.parentElement.style.background = "rgb(204, 214, 217)");
+      setLastFilterAdded(btnData);
+      setFilterNames((prev) => {
+        return [...prev, btnData];
+      });
+      setNonFiltered((prev) => prev.filter((item) => item.id !== btnData.id));
     } else {
-      setLastFilterRemoved(label);
-      if (btnRef) {
-        btnRef.current.parentElement.style.background = "white";
-      }
+      btnRef && (btnRef.current.parentElement.style.background = "white");
+      setLastFilterRemoved(btnData);
+      setNonFiltered((prev) => [...prev, btnData]);
+      setFilterNames((prev) => prev.filter((item) => item.id !== btnData.id));
     }
-    setFilterNames((prev) => {
-      if (prev?.[label] === label) {
-        delete prev?.[label];
-        return { ...prev };
-      }
-      return { ...prev, [label]: label };
-    });
+
     setActive(!active);
   };
-  return btnData && btnData.length <= 3 ? (
+
+  return btnData.facetInfo && btnData.facetInfo.length <= 3 ? (
     <p
       className={`flex items-center gap-1.5 px-2.5 py-1`}
-      onClick={() => handleClick(btnData[0].label)}
+      onClick={() => handleClick(btnData)}
       ref={btnRef}
     >
-      {btnData[0]?.label}
+      {btnData.facetInfo[0]?.label}
       <span>
         {active && <i className="fi fi-sr-cross-small text-lg flex"></i>}
       </span>

@@ -25,6 +25,10 @@ export default function AllRestaurants() {
     );
   }, [restaurantData]);
 
+  // useEffect(() => {
+  //   console.log(filterNames);
+  // }, [filterNames]);
+
   return (
     <>
       <section className="w-[75%]  mx-auto flex flex-col gap-9">
