@@ -1,12 +1,12 @@
-import { act, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Filters({
   filterData,
   filterNames,
-  setFilterNames,
   setLastFilterAdded,
   setLastFilterRemoved,
 }) {
+  const [filtered, setFiltered] = useState([]);
   const [nonFiltered, setNonFiltered] = useState([]);
   const [allData, setAllData] = useState(null);
 
@@ -19,39 +19,14 @@ export default function Filters({
     setNonFiltered(newData);
   }, [filterData]);
 
-  useEffect(() => {
-    console.log("filterNames: ", filterNames);
-  }, [filterNames]);
-
-  useEffect(() => {
-    console.log("nonFiltered: ", nonFiltered);
-  }, [nonFiltered]);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     let newData = [];
-  //     data.forEach((item) => {
-  //       item.facetInfo.length === 3
-  //         ? newData.push({
-  //             ...item,
-  //             facetInfo: item.facetInfo.slice(0, 1),
-  //           }) && newData.push({ ...item, facetInfo: item.facetInfo.slice(2) })
-  //         : item.facetInfo.length <= 2 &&
-  //           newData.push({ ...item, facetInfo: item.facetInfo.slice(0, 1) });
-  //     });
-  //     setFilter(newData);
-  //     console.log("setFilter data");
-  //   }
-  // }, [data]);
-  // console.log("filter rendered");
   return (
     <>
       <div className="flex gap-4 text-sm text-gray-600 ">
         <div className="border border-gray-400 rounded-full cursor-pointer shadow-md py-1.5 px-3 min-w-fit">
           <div className="flex gap-2 items-center">
-            {filterNames && Object.keys(filterNames).length ? (
+            {filterNames && filterNames.length ? (
               <span className="bg-orange-500 rounded-full w-5 text-center text-white font-bold">
-                {Object.keys(filterNames).length}
+                {filterNames.length}
               </span>
             ) : null}
             <span>Filter</span>
@@ -64,8 +39,8 @@ export default function Filters({
           </div>
         </div>
 
-        {(filterNames
-          ? [...filterNames, ...nonFiltered]
+        {(filtered && filtered?.length
+          ? [...filtered, ...nonFiltered]
           : allData
           ? allData
           : []
@@ -78,10 +53,10 @@ export default function Filters({
               >
                 <FilterBtn
                   btnData={item}
-                  setFilterNames={setFilterNames}
+                  setFiltered={setFiltered}
+                  setNonFiltered={setNonFiltered}
                   setLastFilterAdded={setLastFilterAdded}
                   setLastFilterRemoved={setLastFilterRemoved}
-                  setNonFiltered={setNonFiltered}
                 />
               </div>
             )
@@ -93,10 +68,10 @@ export default function Filters({
 
 function FilterBtn({
   btnData,
-  setFilterNames,
+  setFiltered,
+  setNonFiltered,
   setLastFilterAdded,
   setLastFilterRemoved,
-  setNonFiltered,
 }) {
   const [active, setActive] = useState(false);
   const btnRef = useRef(null);
@@ -105,31 +80,31 @@ function FilterBtn({
     if (!active) {
       btnRef &&
         (btnRef.current.parentElement.style.background = "rgb(204, 214, 217)");
-      setLastFilterAdded(btnData);
-      setFilterNames((prev) => {
+      setLastFilterAdded(btnData.facetInfo[0].label);
+      setFiltered((prev) => {
         return [...prev, btnData];
       });
       setNonFiltered((prev) => prev.filter((item) => item.id !== btnData.id));
     } else {
       btnRef && (btnRef.current.parentElement.style.background = "white");
-      setLastFilterRemoved(btnData);
+      setLastFilterRemoved(btnData.facetInfo[0].label);
       setNonFiltered((prev) => [...prev, btnData]);
-      setFilterNames((prev) => prev.filter((item) => item.id !== btnData.id));
+      setFiltered((prev) => prev.filter((item) => item.id !== btnData.id));
     }
 
     setActive(!active);
   };
 
   return btnData.facetInfo && btnData.facetInfo.length <= 3 ? (
-    <p
+    <div
       className={`flex items-center gap-1.5 px-2.5 py-1`}
       onClick={() => handleClick(btnData)}
       ref={btnRef}
     >
       {btnData.facetInfo[0]?.label}
       <span>
-        {active && <i className="fi fi-sr-cross-small text-lg flex"></i>}
+        {active && <i className="fi fi-sr-cross-small text-lg flex"></i>}{" "}
       </span>
-    </p>
+    </div>
   ) : null;
 }
