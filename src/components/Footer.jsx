@@ -97,7 +97,7 @@ export default function Footer() {
                     className="border border-black rounded-md flex items-center gap-1 p-1 hover:shadow-lg"
                     onClick={() => setShowAllCities(!showAllCities)}
                   >
-                    {allCities.length - 6 + " cities "}
+                    {allCities && allCities?.length - 6 + " cities "}
                     {showAllCities ? (
                       <i className="fi fi-sr-angle-small-up flex"></i>
                     ) : (
