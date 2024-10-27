@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import Filters from "./Filters";
 import MenuCard from "./MenuCard";
 import { useSelector } from "react-redux";
+import filterRestaurant from "../utils/filterRestaurant";
 
 export default function AllRestaurants() {
   const [restaurantList, setRestaurantList] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [filterNames, setFilterNames] = useState([]);
-  const [lastFilterAdded, setLastFilterAdded] = useState("");
-  const [lastFilterRemoved, setLastFilterRemoved] = useState("");
+  const [lastFilterAdded, setLastFilterAdded] = useState(null);
+  const [lastFilterRemoved, setLastFilterRemoved] = useState(null);
   const [title, setTitle] = useState("");
+  const [filteredRestaurant, setFilteredRestaurant] = useState([]);
 
   const restaurantData = useSelector(
     (state) => state.restaurantSlice.restaurantsData
@@ -23,11 +25,43 @@ export default function AllRestaurants() {
     setRestaurantList(
       restaurantData[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
+    // console.log(
+    //   restaurantData[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    // );
   }, [restaurantData]);
 
-  // useEffect(() => {
-  //   console.log(filterNames);
-  // }, [filterNames]);
+  useEffect(() => {
+    if (!lastFilterAdded) return;
+    setFilterNames((prev) => [...prev, lastFilterAdded]);
+    const filteredData = restaurantList.filter((restaurant) => {
+      const bool = [...filterNames, lastFilterAdded].map((name) => {
+        return filterRestaurant(restaurant, name);
+      });
+      return bool.every((val) => val);
+    });
+    setFilteredRestaurant(filteredData);
+    console.log("filteredData1", filteredData);
+  }, [lastFilterAdded]);
+
+  useEffect(() => {
+    if (!lastFilterRemoved) return;
+    if (filterNames.length === 1) {
+      setFilterNames([]);
+      return;
+    }
+    const newFilterNames = filterNames.filter(
+      (name) => name !== lastFilterRemoved
+    );
+    setFilterNames(newFilterNames);
+    const filteredData = restaurantList.filter((restaurant) => {
+      const bool = newFilterNames.map((name) => {
+        return filterRestaurant(restaurant, name);
+      });
+      return bool.every((val) => val);
+    });
+    setFilteredRestaurant(filteredData);
+    console.log("filteredData2", filteredData);
+  }, [lastFilterRemoved]);
 
   return (
     <>
@@ -41,7 +75,6 @@ export default function AllRestaurants() {
               <Filters
                 filterData={filterData}
                 filterNames={filterNames}
-                setFilterNames={setFilterNames}
                 setLastFilterAdded={setLastFilterAdded}
                 setLastFilterRemoved={setLastFilterRemoved}
               />
@@ -52,7 +85,10 @@ export default function AllRestaurants() {
         )}
         {restaurantList ? (
           <div className="flex flex-wrap gap-5">
-            {restaurantList.map((restaurant) => (
+            {(filteredRestaurant && filterNames.length
+              ? filteredRestaurant
+              : restaurantList
+            ).map((restaurant) => (
               <div key={restaurant.info.id}>
                 <MenuCard restaurant={restaurant} width={260} />
               </div>
