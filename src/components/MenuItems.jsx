@@ -20,7 +20,7 @@ export default function MenuItems({ itemsData }) {
   useEffect(() => {
     if (menus) {
       // console.log("menus", menus.card.card.gridElements.infoWithStyle.info);
-      setMenuData(menus.card.card.gridElements.infoWithStyle.info);
+      setMenuData(menus?.card?.card?.gridElements?.infoWithStyle?.info);
     }
   }, [menus]);
 
