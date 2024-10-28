@@ -51,17 +51,17 @@ export default function Header() {
             {headerData.map((item) => (
               <li
                 key={item.title}
-                className="flex items-center gap-2  text-gray-500 hover:text-orange-500 "
+                className="group flex items-center gap-2  text-gray-500 hover:text-orange-500 "
               >
                 {item.title === "Cart" ? (
                   <div>
-                    <div className=" rounded-lg w-[19px] h-[1px] bg-gray-500"></div>
+                    <div className="rounded-lg w-[19px] h-[1px] bg-gray-500 group-hover:bg-orange-500 "></div>
                     <div className="flex justify-between">
-                      <div className="w-[1px] h-[15px] bg-gray-500 rounded-lg rotate-6"></div>
+                      <div className="w-[1px] h-[15px] rounded-lg rotate-6 bg-gray-500 group-hover:bg-orange-500"></div>
                       <div className="text-[10px] font-bold">{0}</div>
-                      <div className="w-[1px] h-[15px] bg-gray-500 rounded-lg -rotate-6"></div>
+                      <div className="w-[1px] h-[15px] rounded-lg -rotate-6 bg-gray-500 group-hover:bg-orange-500"></div>
                     </div>
-                    <div className="w-[20px] h-[1px] rounded-lg bg-gray-500"></div>
+                    <div className="w-[20px] h-[1px] rounded-lg bg-gray-500 group-hover:bg-orange-500"></div>
                   </div>
                 ) : (
                   <span>{item.icon}</span>
