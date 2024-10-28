@@ -10,12 +10,21 @@ export default function MenuItems({ itemsData }) {
   const [maxScroll, setMaxScroll] = useState(0);
   const [slider, setSlider] = useState([]);
   const sliderRef = useRef(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const menus = useSelector(
     (state) => state.restaurantSlice.restaurantsData[0]
   );
 
   let sliderWidth = 0;
+
+  useEffect(() => {
+    const isTouchable = "ontouchstart" in window;
+    if (isTouchable) {
+      slider?.current?.classList.add("touch-scroll-container");
+      setIsTouchDevice(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (menus) {
@@ -64,25 +73,29 @@ export default function MenuItems({ itemsData }) {
         <p className="text-2xl font-semibold">
           {menus?.card?.card?.header?.title}
         </p>
-        <span className="flex gap-2 text-2xl">
-          <i
-            className={`fi fi-rr-arrow-circle-left cursor-pointer ${
-              scroll === 0 ? "text-gray-400" : ""
-            }`}
-            onClick={() => handlePrev()}
-          ></i>
-          <i
-            className={`fi fi-rr-arrow-circle-right cursor-pointer ${
-              maxScroll && Math.abs(scroll) === maxScroll ? "text-gray-400" : ""
-            }`}
-            onClick={() => handleNext()}
-          ></i>
-        </span>
+        {!isTouchDevice && (
+          <span className="desktop-btn flex gap-2 text-2xl">
+            <i
+              className={`fi fi-rr-arrow-circle-left cursor-pointer ${
+                scroll === 0 ? "text-gray-400" : ""
+              }`}
+              onClick={() => handlePrev()}
+            ></i>
+            <i
+              className={`fi fi-rr-arrow-circle-right cursor-pointer ${
+                maxScroll && Math.abs(scroll) === maxScroll
+                  ? "text-gray-400"
+                  : ""
+              }`}
+              onClick={() => handleNext()}
+            ></i>
+          </span>
+        )}
       </div>
       <div className="w-[75%] overflow-hidden mx-auto ">
         <div
           style={{ translate: `${scroll}px` }}
-          className={`mx-auto flex duration-300`}
+          className={` mx-auto flex duration-300`}
           ref={sliderRef}
         >
           {menuData &&
@@ -90,7 +103,7 @@ export default function MenuItems({ itemsData }) {
               <img
                 src={BASE_URL + item.imageId}
                 alt={item.description}
-                className="w-[160px] h-[180px]"
+                className="scroll-item w-[160px] h-[180px]"
                 key={item.imageId}
               />
             ))}

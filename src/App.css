@@ -7,3 +7,24 @@
   font-size: 7px;
   color: grey;
 }
+
+@media (max-width: 850px) {
+  .touch-scroll-container {
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .touch-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-item {
+    scroll-snap-align: center;
+  }
+
+  .display-btn {
+    display: hidden;
+  }
+}
