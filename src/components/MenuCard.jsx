@@ -14,7 +14,7 @@ export default function MenuCard({ restaurant, width }) {
   return (
     <div>
       {data ? (
-        <div className="m-1 hover:scale-95 duration-100">
+        <div className="m-1 hover:scale-95 duration-100 cursor-pointer">
           <div
             className={`h-[185px] rounded-2xl relative shadow-lg`}
             style={{ width: `${width ? 260 : 280}px` }}

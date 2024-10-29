@@ -68,47 +68,55 @@ export default function MenuItems({ itemsData }) {
   };
 
   return (
-    <section className="w-full h-[256px] m-auto p-[16px]">
-      <div className="w-[75%] mx-auto flex justify-between">
-        <p className="text-2xl font-semibold">
-          {menus?.card?.card?.header?.title}
-        </p>
-        {!isTouchDevice && (
-          <span className="desktop-btn flex gap-2 text-2xl">
-            <i
-              className={`fi fi-rr-arrow-circle-left cursor-pointer ${
-                scroll === 0 ? "text-gray-400" : ""
-              }`}
-              onClick={() => handlePrev()}
-            ></i>
-            <i
-              className={`fi fi-rr-arrow-circle-right cursor-pointer ${
-                maxScroll && Math.abs(scroll) === maxScroll
-                  ? "text-gray-400"
-                  : ""
-              }`}
-              onClick={() => handleNext()}
-            ></i>
-          </span>
-        )}
-      </div>
-      <div className="w-[75%] overflow-hidden mx-auto ">
-        <div
-          style={{ translate: `${scroll}px` }}
-          className={` mx-auto flex duration-300`}
-          ref={sliderRef}
-        >
-          {menuData &&
-            menuData.map((item) => (
-              <img
-                src={BASE_URL + item.imageId}
-                alt={item.description}
-                className="scroll-item w-[160px] h-[180px]"
-                key={item.imageId}
-              />
-            ))}
-        </div>
-      </div>
-    </section>
+    <>
+      {menuData ? (
+        <section className="w-full h-[256px] m-auto p-[16px]">
+          <div className="w-[75%] mx-auto flex justify-between">
+            <p className="text-2xl font-semibold">
+              {menus?.card?.card?.header?.title}
+            </p>
+            {!isTouchDevice && (
+              <span className="desktop-btn flex gap-2 text-2xl">
+                <i
+                  className={`fi fi-rr-arrow-circle-left cursor-pointer ${
+                    scroll === 0 ? "text-gray-400" : ""
+                  }`}
+                  onClick={() => handlePrev()}
+                ></i>
+                <i
+                  className={`fi fi-rr-arrow-circle-right cursor-pointer ${
+                    maxScroll && Math.abs(scroll) === maxScroll
+                      ? "text-gray-400"
+                      : ""
+                  }`}
+                  onClick={() => handleNext()}
+                ></i>
+              </span>
+            )}
+          </div>
+          <div className="w-[75%] overflow-hidden mx-auto ">
+            <div
+              style={{ translate: `${scroll}px` }}
+              className={` mx-auto flex duration-300`}
+              ref={sliderRef}
+            >
+              {menuData &&
+                menuData.map((item) => (
+                  <img
+                    src={BASE_URL + item.imageId}
+                    alt={item.description}
+                    className="scroll-item w-[160px] h-[180px] cursor-pointer"
+                    key={item.imageId}
+                  />
+                ))}
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section className="min-h-6 flex justify-center items-center">
+          <h2 className="text-2xl font-bold">Please wait for a while...</h2>
+        </section>
+      )}
+    </>
   );
 }
