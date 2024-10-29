@@ -10,24 +10,27 @@ import BestPlaceToEatAcrossCities from "./components/BestPlaceToEatAcrossCities"
 import BestCuisinesNearMe from "./components/BestCuisinesNearMe";
 import ExploreEveryRestaurantsNearMe from "./components/ExploreEveryRestaurantsNearMe";
 import Footer from "./components/Footer";
+import { responseData } from "./utils/tempResponse";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [tempResponse, setTempResponse] = useState(responseData);
   const restSlice = useSelector(
     (state) => state.restaurantSlice.restaurantsData
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(setAllRestaurants(tempResponse.data.cards));
     const getResponse = async () => {
       const req = await fetch(
         "https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.37240&lng=78.43780&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
       );
       const response = await req.json();
-      setData(response.data.cards);
       dispatch(setAllRestaurants(response.data.cards));
     };
+    console.time("start");
     getResponse();
+    console.timeEnd("start");
   }, []);
 
   useEffect(() => {
