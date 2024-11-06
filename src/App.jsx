@@ -22,15 +22,11 @@ function App() {
   useEffect(() => {
     dispatch(setAllRestaurants(tempResponse.data.cards));
     const getResponse = async () => {
-      const req = await fetch(
-        "https://my-backend-server-gpgg.onrender.com/main"
-      );
+      const req = await fetch(import.meta.env.VITE_API_BASE_URL);
       const response = await req.json();
       dispatch(setAllRestaurants(response.data.cards));
     };
-    console.time("start");
     getResponse();
-    console.timeEnd("start");
   }, []);
 
   useEffect(() => {
